@@ -1,0 +1,235 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "AWPSS17-Backend"
+host: "localhost:3000"
+basePath: "/"
+schemes:
+- "http"
+paths:
+  /element:
+    get:
+      tags:
+      - "Element"
+      summary: "Returns all Elements"
+      operationId: "getAllElements"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/element"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Element not found"
+      x-swagger-router-controller: "controller"
+  /element/{Id}:
+    post:
+      tags:
+      - "Element"
+      summary: "Add a new element"
+      description: ""
+      operationId: "createElement"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Id"
+        in: "path"
+        description: "ElementId"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Element Object"
+        required: true
+        schema:
+          $ref: "#/definitions/element"
+      responses:
+        405:
+          description: "Invalid input"
+      x-swagger-router-controller: "controller"
+    put:
+      tags:
+      - "Element"
+      summary: "Update an existing element"
+      description: ""
+      operationId: "updateElement"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Id"
+        in: "path"
+        description: "ElementId"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Element object that needs to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/element"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Element not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "controller"
+    get:
+      tags:
+      - "Element"
+      summary: "Find Element by ID"
+      description: "Returns a single Element"
+      operationId: "getElement"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Id"
+        in: "path"
+        description: "ID of element to return"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/element"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Element not found"
+      x-swagger-router-controller: "controller"
+  /search:
+    post:
+      tags:
+      - "Search"
+      summary: "Search for a string"
+      description: ""
+      operationId: "getSearch"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Searchstring"
+        required: true
+        schema:
+          $ref: "#/definitions/searchstring"
+      responses:
+        405:
+          description: "Invalid input"
+      x-swagger-router-controller: "controller"
+  /export:
+    post:
+      tags:
+      - "PDF Export"
+      summary: "Creates a PDF File"
+      description: ""
+      operationId: "getPDFExport"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Elements to create PDF"
+        required: true
+        schema:
+          $ref: "#/definitions/pdfschema"
+      responses:
+        405:
+          description: "Invalid input"
+      x-swagger-router-controller: "controller"
+
+definitions:
+  element:
+    type: "object"
+    required:
+    - "id"
+    properties:
+      id:
+        type: "string"
+        example: "1_0_0"
+      level:
+        type: "number"
+        example: "1"
+      pos:
+        type: "number"
+        example: "1"
+      parent:
+        type: "string"
+        example: "null"
+      icon:
+        type: "string"
+        example: "path/to/icon"
+      data:
+        $ref: "#/definitions/data"
+  data:
+    type: "object"
+    properties:
+      heading:
+        type: "string"
+        example: "Investition und Finanzierung"
+      structure:
+        $ref: "#/definitions/structure"
+      layout:
+        type: "string"
+        description: "Art des Layouts"
+        enum:
+        - "navigation"
+        - "scroll-x"
+        - "scroll-y"
+  structureitem:
+    type: "object"
+    required:
+    - "id"
+    - "componentType"
+    properties:
+      id:
+        type: "string"
+        example: "1_0_0x1"
+        description: "<ElementID>x<n>"
+      componentType:
+        type: "string"
+        enum:
+        - "nav"
+        - "text"
+        - "img"
+      content:
+        type: "string"
+        example: "Finanzielle Freiräume für das Unternehmen"
+      width:
+        type: "string"
+        example: "null"
+      imgHeading:
+        type: "string"
+        example: "Überschrift"
+  structure:
+      type: "array"
+      items:
+        $ref: "#/definitions/structureitem"
+  searchstring:
+    type: "object"
+    required:
+    - "attr"
+    properties:
+      attr:
+        type: "string"
+        example: "Liquidität"
+  pdfschema:
+    type: "array"
+    items:
+      $ref: "#/definitions/element"

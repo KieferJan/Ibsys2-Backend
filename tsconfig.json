@@ -1,0 +1,29 @@
+{
+  "files": [
+    "src/rest-api/index.ts",
+    "src/models/element.ts",
+    "src/models/dataStructure.ts",
+    "src/test/element.spec.ts",
+    "src/element/controller.ts",
+    "src/element/index.ts",
+    "src/element/model.ts",
+    "typings/globals/node/index.d.ts",
+    "typings/modules/body-parser/index.d.ts",
+    "typings/modules/express/index.d.ts",
+    "typings/modules/express-serve-static-core/index.d.ts",
+    "typings/modules/mime/index.d.ts",
+    "typings/modules/mongoose/index.d.ts",
+    "typings/modules/serve-static/index.d.ts",
+    "typings/index.d.ts"
+  ],
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "typeRoots": [ "../node_modules/@types" ],
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": false
+  }
+}
